@@ -6,7 +6,7 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url('./background.png'); /* ✅ ใช้ path relative */
+  background-image: url('./background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,22 +17,25 @@ body::before {
 body {
   margin: 0;
   font-family: sans-serif;
-  min-height: 100vh;
+  height: 100dvh;
   background-color: #e0f7fa;
   position: relative;
   z-index: 1;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  overflow: hidden;
 }
 
 .container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  max-width: 480px;
+  height: 100%;
   text-align: center;
-  overflow: hidden;
-  padding: 30px 5vw 80px 5vw;
+  overflow-y: auto;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -196,125 +199,11 @@ body {
   border-radius: 16px;
   max-width: 500px;
   width: 90%;
-  max-height: 90vh;
+  max-height: 90dvh;
   overflow-y: auto;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.3s ease-out;
-}
-
-.modal-content h2 {
-  margin-bottom: 16px;
-  font-size: 2rem;
-  color: #ff9800;
-}
-
-.modal-content h3 {
-  margin-top: 20px;
-  font-size: 1.4rem;
-  color: #ff9800;
-}
-
-.modal-content p {
-  margin-bottom: 12px;
-  font-size: 1.2rem;
-  color: #333;
-  text-align: left;
-}
-
-.close-btn {
-  background-color: #2196f3;
-  color: #fff;
-  font-size: 1rem;
-  padding: 8px 24px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  margin-top: 16px;
-  transition: transform 0.2s ease;
-}
-
-.close-btn:hover {
-  transform: scale(1.05);
-}
-
-/* 🧾 Ticket Modal */
-.ticket-icon {
-  width: 80px;
-  height: auto;
-  margin-bottom: 16px;
-  animation: fadeIn 0.4s ease-out;
-  filter: drop-shadow(0 0 8px #ff9800);
-}
-
-.ticket-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-  text-align: left;
-}
-
-.ticket-list li {
-  font-size: 1.2rem;
-  margin-bottom: 12px;
-  padding-left: 24px;
-  position: relative;
-}
-
-.ticket-list li::before {
-  content: "🎫";
-  position: absolute;
-  left: 0;
-}
-
-.buy-ticket-btn {
-  background-color: #ff9800;
-  color: #fff;
-  font-size: 1rem;
-  padding: 6px 16px;
-  margin-left: 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.buy-ticket-btn:hover {
-  transform: scale(1.05);
-}
-
-.summary-modal {
-  background-color: #fff8e1;
-  padding: 32px;
-  border-radius: 16px;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.3s ease-out;
-}
-
-.summary-modal h2 {
-  margin-bottom: 16px;
-  font-size: 2rem;
-  color: #ff9800;
-}
-
-.summary-modal ul {
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 12px;
-}
-
-.summary-modal li {
-  font-size: 1.2rem;
-  margin-bottom: 6px;
-}
-
-.summary-modal p {
-  font-size: 1.2rem;
-  margin-top: 12px;
-  color: #333;
 }
 
 /* ✨ Animation */
@@ -329,94 +218,66 @@ body {
   }
 }
 
-/* 📱 Responsive */
-@media (max-width: 600px) {
-  .mango-grid {
-    grid-template-columns: repeat(4, 1fr);
-    padding: 0 10vw;
-  }
-
-  .mango-btn {
-    font-size: 1.5rem;
-  }
-
+/* 📱 Responsive มือถือแนวตั้ง */
+@media (max-width: 480px) {
   .container {
-    padding: 10px;
+    max-width: 100%;
+    padding: 16px;
   }
 
-  .mascot {
-    width: 80px;
-    right: 10px;
-    bottom: 10px;
+  .logo {
+    max-width: 90%;
+    margin-bottom: 16px;
   }
 
-  .modal-content {
-    padding: 20px;
-    font-size: 1rem;
+  .mango-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0;
+    width: 100%;
   }
 
-  .modal-content h2 {
-    font-size: 1.5rem;
+  .button-group {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 16px;
   }
 
-  .modal-content p {
-    font-size: 1rem;
-  }
-
-  .buy-ticket-btn {
-    font-size: 0.9rem;
-    padding: 6px 12px;
-  }
-
-  .close-btn {
-    font-size: 0.9rem;
-    padding: 8px 20px;
+  .status-bar {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
   }
 
   .start-btn, .buy-btn, .how-btn {
     font-size: 1.4rem;
     padding: 12px 24px;
-  }
-
-  .status-left, .status-right {
-    font-size: 1rem;
-    padding: 8px 12px;
-  }
-
-  .result-mascot {
-    width: 180px;
+    width: 100%;
   }
 
   .result-banner {
-    bottom: 8vh;
-    padding: 16px;
-  }
-}
-
-/* 💻 Responsive for large screens */
-@media (min-width: 1024px) {
-  .container {
-    padding: 40px 10vw;
-  }
-
-  .logo {
-    max-width: 700px;
-  }
-
-  .mango-grid {
-    max-width: 800px;
-  }
-
-  .start-btn, .buy-btn, .how-btn {
-    font-size: 2rem;
-    padding: 16px 40px;
-  }
-
-  .status-left, .status-right {
-    font-size: 1.4rem;
+    bottom: 12vh;
   }
 
   .result-mascot {
-    width: 500px;
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .modal-content {
+    padding: 24px 16px;
+    width: 100%;
+    max-width: 400px;
+    max-height: 90dvh;
+    overflow-y: auto;
+  }
+
+  .mascot {
+    position: relative;
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    margin-top: auto;
   }
 }
