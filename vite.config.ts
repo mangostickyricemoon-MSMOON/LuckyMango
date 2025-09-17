@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react-swc';
 
 export default defineConfig({
   plugins: [react()],
-  base: './' // ✅ ช่วยให้โหลดไฟล์ถูกตอน deploy
+  base: '/lucky-mango/' // ✅ ชื่อ repo ต้องตรง
 });
