@@ -138,11 +138,11 @@ function App() {
             <p>4000 SHIDO — 5 picks</p>
 
             <h3>🎁 Available Prizes (Total: 20)</h3>
-            <p>10 prizes of 100 SHIDO</p>
-            <p>7 prizes of 200 SHIDO</p>
-            <p>1 prize of 2500 SHIDO</p>
-            <p>1 prize of 3500 SHIDO</p>
             <p>1 prize of 5000 SHIDO</p>
+            <p>1 prize of 3500 SHIDO</p>
+            <p>1 prize of 2500 SHIDO</p>
+            <p>7 prizes of 200 SHIDO</p>
+            <p>10 prizes of 100 SHIDO</p>
 
             <button className="close-btn" onClick={() => setShowModal(false)}>Back</button>
           </div>
