@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
 
+// ✅ ใช้ path relative จาก src/
+import mangoIcon from './assets/mango-icon.png';
+import mascotWin from './assets/mascot-win.png';
+import mascotLose from './assets/mascot-lose.png';
+import mascotMango from './assets/mascot_mango_msmoon.png';
+import logo from './assets/lucky-mango-logo.png';
+import ticketIcon from './assets/ticket-icon.png';
+
 function App() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showTicketPage, setShowTicketPage] = useState<boolean>(false);
@@ -48,8 +56,8 @@ function App() {
 
   return (
     <div className="container">
-      <img src="/mascot_mango_msmoon.png" alt="Mascot Mango" className="mascot" loading="lazy" />
-      <img src="/lucky-mango-logo.png" alt="Lucky Mango Logo" className="logo" loading="lazy" />
+      <img src={mascotMango} alt="Mascot Mango" className="mascot" loading="lazy" />
+      <img src={logo} alt="Lucky Mango Logo" className="logo" loading="lazy" />
 
       <div className="mango-grid">
         {[...Array(20)].map((_, i) => (
@@ -60,7 +68,7 @@ function App() {
             disabled={pickedIndexes.includes(i)}
           >
             <img
-              src="/mango-icon.png"
+              src={mangoIcon}
               alt="Mango"
               className="mango-img"
               style={{ opacity: pickedIndexes.includes(i) ? 0.4 : 1 }}
@@ -85,7 +93,7 @@ function App() {
       {showResult && (
         <div className="result-banner">
           <img
-            src={lastPrize ? "/mascot-win.png" : "/mascot-lose.png"}
+            src={lastPrize ? mascotWin : mascotLose}
             alt="Result Mascot"
             className="result-mascot"
             loading="lazy"
@@ -144,7 +152,7 @@ function App() {
       {showTicketPage && (
         <div className="modal-overlay" onClick={() => setShowTicketPage(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src="/ticket-icon.png" alt="Ticket Icon" className="ticket-icon" loading="lazy" />
+            <img src={ticketIcon} alt="Ticket Icon" className="ticket-icon" loading="lazy" />
             <h2>🎟️ Choose Your Ticket</h2>
             <ul className="ticket-list">
               {[

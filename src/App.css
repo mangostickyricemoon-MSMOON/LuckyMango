@@ -6,7 +6,7 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url('/background.png');
+  background-image: url('./background.png'); /* ✅ ใช้ path relative */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,7 +17,7 @@ body::before {
 body {
   margin: 0;
   font-family: sans-serif;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #e0f7fa;
   position: relative;
   z-index: 1;
@@ -28,20 +28,21 @@ body {
 
 .container {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   text-align: center;
   overflow: hidden;
   padding: 30px 5vw 80px 5vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
   z-index: 2;
 }
 
 /* 🏷️ โลโก้ */
 .logo {
-  width: calc(100% - 10vw);
+  width: 100%;
   max-width: 600px;
   margin-bottom: 32px;
   animation: fadeIn 0.4s ease-out;
@@ -51,14 +52,15 @@ body {
 /* 🥭 มะม่วง */
 .mango-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 10px;
-  margin-top: 10px;
-  padding: 0 30vw;
+  width: 100%;
+  max-width: 600px;
+  padding: 0 5vw;
 }
 
 .mango-btn {
-  width: 95%;
+  width: 100%;
   aspect-ratio: 1 / 1;
   background-color: #fff3e0;
   border: 2px solid #ffb300;
@@ -80,8 +82,9 @@ body {
 /* 📊 แถวสถานะ */
 .status-bar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
   margin: 24px 0;
 }
 
@@ -100,8 +103,9 @@ body {
 /* 🎮 ปุ่มหลัก */
 .button-group {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
   margin-bottom: 32px;
 }
 
@@ -134,18 +138,21 @@ body {
 /* 🥭 Mascot */
 .mascot {
   position: absolute;
-  bottom: 50px;
-  right: 100px;
-  width: 240px;
-  max-width: 20vw;
+  bottom: 2vh;
+  right: 2vw;
+  width: min(240px, 20vw);
   z-index: 3;
 }
 
 /* 🎉 ผลรางวัล */
 .result-banner {
-  margin-top: -700px;
+  position: fixed;
+  bottom: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
   text-align: center;
-  background: transparent; /* ✅ ไม่มีพื้นหลัง */
+  background: transparent;
   padding: 0;
 }
 
@@ -163,13 +170,11 @@ body {
   margin-top: 12px;
 }
 
-/* ✅ เพิ่มแสงเงาให้ mascot */
 .result-mascot {
   width: 480px;
   margin-bottom: 24px;
   filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
 }
-
 
 /* 🪟 Modal */
 .modal-overlay {
@@ -191,6 +196,8 @@ body {
   border-radius: 16px;
   max-width: 500px;
   width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.3s ease-out;
@@ -310,7 +317,6 @@ body {
   color: #333;
 }
 
-
 /* ✨ Animation */
 @keyframes fadeIn {
   from {
@@ -382,7 +388,35 @@ body {
   }
 
   .result-banner {
-    margin-top: -200px;
+    bottom: 8vh;
     padding: 16px;
+  }
+}
+
+/* 💻 Responsive for large screens */
+@media (min-width: 1024px) {
+  .container {
+    padding: 40px 10vw;
+  }
+
+  .logo {
+    max-width: 700px;
+  }
+
+  .mango-grid {
+    max-width: 800px;
+  }
+
+  .start-btn, .buy-btn, .how-btn {
+    font-size: 2rem;
+    padding: 16px 40px;
+  }
+
+  .status-left, .status-right {
+    font-size: 1.4rem;
+  }
+
+  .result-mascot {
+    width: 500px;
   }
 }
