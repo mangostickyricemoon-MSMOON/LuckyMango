@@ -231,8 +231,8 @@ body {
   }
 
   .mango-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
     padding: 0;
     width: 100%;
   }
@@ -271,6 +271,16 @@ body {
     max-width: 400px;
     max-height: 90dvh;
     overflow-y: auto;
+  }
+
+ .ticket-list li {
+    font-size: 1rem;
+    padding-left: 20px;
+  }
+
+  .buy-ticket-btn {
+    font-size: 0.9rem;
+    padding: 6px 12px;
   }
 
   .mascot {
