@@ -141,9 +141,9 @@ body {
 /* 🥭 Mascot */
 .mascot {
   position: absolute;
-  bottom: 2vh;
-  right: 2vw;
-  width: min(240px, 20vw);
+  bottom: 3vh;
+  right: 0vw;
+  width: min(90px, 20vw);
   z-index: 3;
 }
 
