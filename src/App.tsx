@@ -56,7 +56,6 @@ function App() {
 
   return (
     <div className="container">
-      <img src={mascotMango} alt="Mascot Mango" className="mascot" loading="lazy" />
       <img src={logo} alt="Lucky Mango Logo" className="logo" loading="lazy" />
 
       <div className="mango-grid">
@@ -79,15 +78,17 @@ function App() {
       </div>
 
       <div className="status-bar">
-        <div className="status-left">🎟️ Tickets: {tickets}</div>
+        <div className="status-left">🎟️ Tickets: {tickets}</div>  
         <div className="status-right">🥭 Remaining: {20 - selectedCount} / 20</div>
         <div className="status-right">🎁 Total Rewards: {getTotalShido()} SHIDO</div>
+        <img src={mascotMango} alt="Mascot Mango" className="mascot" loading="lazy" />        
       </div>
+ 
 
       <div className="button-group">
         <button className="start-btn" onClick={() => setIsPlaying(true)}>Start</button>
         <button className="buy-btn" onClick={() => setShowTicketPage(true)}>Buy Ticket</button>
-        <button className="how-btn" onClick={() => setShowModal(true)}>How to Play</button>
+        <button className="how-btn" onClick={() => setShowModal(true)}>How to Play</button> 
       </div>
 
       {showResult && (
@@ -192,6 +193,10 @@ function App() {
           </div>
         </div>
       )}
+
+      
+
+      
     </div>
   );
 }

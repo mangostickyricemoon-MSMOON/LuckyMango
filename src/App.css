@@ -32,7 +32,7 @@ body::before {
 /* 🎮 พื้นที่เกมหลัก */
 .container {
   width: 100%;
-  max-width: 480px; /* ✅ จำกัดความกว้างให้พอดีมือถือ */
+  max-width: 640px; /* ✅ จำกัดความกว้างให้พอดีมือถือ */
   height: 100%;
   padding: 12px 8px;
   box-sizing: border-box;
@@ -40,6 +40,12 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  background-image: url('/background.png'); /* ✅ ใส่ภาพพื้นหลังในกล่องเกม */
+  background-size: cover;                  /* ✅ ปรับให้เต็มกล่อง */
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 16px;                     /* ✅ ถ้าต้องการขอบมน */
 }
 
 .logo {
@@ -88,69 +94,94 @@ body::before {
 }
 
 /* 🪟 Modal */
-.modal-content {
+.modal-content,
+.how-modal {
+  background-color: #fff8e1;            /* ✅ พื้นหลังครีม */
+  border-radius: 16px;                  /* ✅ ขอบมน */
+  padding: 24px 16px;
   max-width: 400px;
   width: 90%;
-  max-height: 90dvh;
-  overflow-y: auto;
-  padding: 24px 16px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-out;
   box-sizing: border-box;
+  overflow-y: auto;
+  max-height: 90dvh;
+  position: relative;
 }
 
-/* 🥭 Mascot */
 .mascot {
   width: min(80px, 20vw); /* ✅ ปรับขนาดตามจอ */
   height: auto;
-  margin-left: 12px;
-  align-self: Bottom;
+  margin: 8px auto 0 auto; /* ✅ อยู่ตรงกลางด้านล่าง */
+  display: block;
+  pointer-events: none;
 }
+
 
 /* 📊 แถวสถานะ */
 .status-bar {
   display: flex;
-  flex-wrap: none;
+  flex-direction: column; /* ✅ เรียงแนวตั้ง */
+  gap: 12px;
+  margin: 36px 0;
+  width: 100%;
+  align-items: center;
+}
+
+.status-row {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin: 16px 0;
   width: 100%;
 }
 
-.status-left, .status-right {
-  font-size: clamp(0.9rem, 2.5vw, 1.2rem); /* ✅ ปรับขนาดตามจอ */
+.status-left,
+.status-right {
+  display: inline-block;
+  font-size: 0.2rem;
   background-color: #fff8e1;
   color: #000;
-  padding: 6px 12px;
+  padding: 8px 12px;              /* ✅ เพิ่ม padding ด้านบน/ล่าง */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  min-width: 120px;
+  box-sizing: border-box;
   text-align: center;
   font-weight: bold;
+  white-space: nowrap;
+  line-height: 1.0;               /* ✅ ปรับระยะห่างระหว่างบรรทัด */
+  margin: 2px 0;                  /* ✅ เว้นระยะห่างระหว่างกรอบ */
 }
+
 
 /* 🎮 ปุ่มหลัก */
 .button-group {
   display: flex;
   flex-wrap: column;
   justify-content: center;
-  align-items: center; /* ✅ ให้ mascot อยู่ตรงกลางแนวตั้ง */
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: -2px;
+  margin-bottom: 0px;
 }
 
-.start-btn, .buy-btn, .how-btn {
-  font-size: clamp(1rem, 4vw, 1.4rem); /* ✅ ปรับขนาดตามจอ */
-  padding: 10px 20px;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 320px;
+.start-btn,
+.buy-btn,
+.how-btn {
+  display: inline-block;
+  font-size: 1rem;               /* ✅ เท่ากับ status bar */
+  padding: 6px 12px;             /* ✅ เท่ากับ status bar */
+  line-height: 1.4;              /* ✅ ระยะห่างตัวอักษรพอดี */
+  border-radius: 12px;
   box-sizing: border-box;
   border: none;
   color: #fff;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  align-self: center;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 2px 4px;
 }
+
+
 
 .start-btn {
   background-color: #ff9800;
@@ -232,7 +263,7 @@ body::before {
 .ticket-icon {
   width: 20npx;
   height: auto;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   animation: fadeIn 0.4s ease-out;
   filter: drop-shadow(0 0 8px #ff9800);
 }
@@ -272,6 +303,28 @@ body::before {
 .buy-ticket-btn:hover {
   transform: scale(1.05);
 }
+
+.how-modal {
+  background-color: #fff8e1;
+  padding: 24px 16px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-out;
+  box-sizing: border-box;
+  overflow-y: auto;
+  max-height: 90dvh;
+}
+
+.ticket-icon {
+  width: 40px;
+  height: auto;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 6px #ff9800);
+}
+
 
 /* 🎁 Summary Modal */
 .summary-modal {
