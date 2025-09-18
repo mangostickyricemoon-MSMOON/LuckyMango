@@ -11,12 +11,30 @@ body {
   overflow: hidden;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh; /* ✅ รองรับ safe area บนมือถือ */
+  background-image: url('./background.png');
+  background-size: cover;        /* ✅ ปรับให้เต็มจอโดยรักษาสัดส่วน */
+  background-position: center center; /* ✅ จัดให้อยู่กลางทั้งแนวตั้งและแนวนอน */
+  background-repeat: no-repeat;
+  background-attachment: fixed;  /* ✅ ป้องกันการเลื่อนพื้นหลัง */
+  z-index: -1;                   /* ✅ อยู่หลังสุดของทุกเลเยอร์ */
+  pointer-events: none;          /* ✅ ไม่ให้คลิกทะลุพื้นหลัง */
+}
+
+
+
 /* 🎮 พื้นที่เกมหลัก */
 .container {
   width: 100%;
   max-width: 480px; /* ✅ จำกัดความกว้างให้พอดีมือถือ */
   height: 100%;
-  padding: 16px;
+  padding: 12px 8px;
   box-sizing: border-box;
   overflow-y: auto;
   display: flex;
@@ -24,10 +42,21 @@ body {
   align-items: center;
 }
 
+.logo {
+  width: 100%;
+  max-width: 320px; /* ✅ ปรับขนาดสูงสุด */
+  height: auto;
+  margin-bottom: 16px;
+  animation: fadeIn 0.4s ease-out;
+  filter: drop-shadow(0 0 12px #ffeb3b);
+  object-fit: contain;
+}
+
+
 /* 🥭 Grid มะม่วง */
 .mango-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* ✅ fix 4 คอลัมน์ */
+  grid-template-columns: repeat(5, 1fr); /* ✅ fix 5 คอลัมน์ */
   gap: 8px;
   width: 100%;
   max-width: 400px;
@@ -44,6 +73,9 @@ body {
   border: 2px solid #ffb300;
   border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: transform 0.2s ease;
   box-sizing: border-box;
 }
@@ -67,26 +99,27 @@ body {
 
 /* 🥭 Mascot */
 .mascot {
-  width: 80px;
-  margin-top: auto;
-  position: relative;
+  width: min(80px, 20vw); /* ✅ ปรับขนาดตามจอ */
+  height: auto;
+  margin-left: 12px;
+  align-self: Bottom;
 }
 
 /* 📊 แถวสถานะ */
 .status-bar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: none;
   justify-content: center;
   gap: 12px;
-  margin: 20px 0;
+  margin: 16px 0;
   width: 100%;
 }
 
 .status-left, .status-right {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem); /* ✅ ปรับขนาดตามจอ */
   background-color: #fff8e1;
   color: #000;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   min-width: 120px;
@@ -97,25 +130,30 @@ body {
 /* 🎮 ปุ่มหลัก */
 .button-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: column;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  width: 100%;
+  align-items: center; /* ✅ ให้ mascot อยู่ตรงกลางแนวตั้ง */
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .start-btn, .buy-btn, .how-btn {
-  background-color: #ff9800;
-  color: #fff;
-  font-size: 1.4rem;
-  padding: 12px 24px;
-  border: none;
+  font-size: clamp(1rem, 4vw, 1.4rem); /* ✅ ปรับขนาดตามจอ */
+  padding: 10px 20px;
   border-radius: 16px;
-  cursor: pointer;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
   width: 100%;
-  max-width: 200px;
+  max-width: 320px;
+  box-sizing: border-box;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  align-self: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.start-btn {
+  background-color: #ff9800;
 }
 
 .buy-btn {
@@ -295,8 +333,8 @@ body {
   }
 
   .logo {
-    max-width: 90%;
-    margin-bottom: 16px;
+    max-width: 240px;
+    margin-bottom: 12px;
   }
 
   .mango-grid {
