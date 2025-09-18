@@ -41,7 +41,7 @@ body::before {
   flex-direction: column;
   align-items: center;
   
-  background-image: url('/background.png'); /* ✅ ใส่ภาพพื้นหลังในกล่องเกม */
+  background-image: url('/LuckyMango/background.png');  /* ✅ มี ; */ /* ✅ ใส่ภาพพื้นหลังในกล่องเกม */
   background-size: cover;                  /* ✅ ปรับให้เต็มกล่อง */
   background-position: center;
   background-repeat: no-repeat;
