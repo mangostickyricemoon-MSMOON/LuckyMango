@@ -32,8 +32,8 @@ body::before {
 /* 🎮 พื้นที่เกมหลัก */
 .container {
   width: 100%;
-  max-width: 360px; /* ✅ จำกัดความกว้างให้พอดีมือถือ */
-  height: 100%;
+  max-width: 640px; /* ✅ จำกัดความกว้างให้พอดีมือถือ */
+  height: 120%;
   padding: 12px 8px;
   box-sizing: border-box;
   overflow-y: auto;
@@ -381,7 +381,7 @@ body::before {
 }
 
 /* 📱 Responsive มือถือแนวตั้ง */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .container {
     padding: 12px 8px;
   }
