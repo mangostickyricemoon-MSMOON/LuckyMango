@@ -1,157 +1,131 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// ✅ ใช้ path relative จาก src/
 import mangoIcon from './assets/mango-icon.png';
 import mascotWin from './assets/mascot-win.png';
 import mascotLose from './assets/mascot-lose.png';
-import mascotMango from './assets/mascot_mango_msmoon.png';
 import logo from './assets/lucky-mango-logo.png';
 import ticketIcon from './assets/ticket-icon.png';
 
 function App() {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [showTicketPage, setShowTicketPage] = useState<boolean>(false);
-  const [selectedTicket, setSelectedTicket] = useState<number | null>(null);
-  const [tickets, setTickets] = useState<number>(0);
-  const [selectedCount, setSelectedCount] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [showHowToModal, setShowHowToModal] = useState(false);
+  const [showTicketModal, setShowTicketModal] = useState(false);
+  const [showSummaryModal, setShowSummaryModal] = useState(false);
+
+  const [picksTotal, setPicksTotal] = useState(0);
+  const [picksAvailable, setPicksAvailable] = useState(0);
   const [pickedIndexes, setPickedIndexes] = useState<number[]>([]);
-  const [prizesWon, setPrizesWon] = useState<string[]>([]);
-  const [showResult, setShowResult] = useState<boolean>(false);
-  const [lastPrize, setLastPrize] = useState<string | null>(null);
+  const [rewardsWon, setRewardsWon] = useState<string[]>([]);
   const [prizePool, setPrizePool] = useState<string[]>([]);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameLocked, setGameLocked] = useState(false);
+
+  const handlePick = (index: number): void => {
+    if (!gameStarted || gameLocked || picksAvailable <= 0) return;
+
+    if (pickedIndexes.includes(index)) {
+      setPickedIndexes(pickedIndexes.filter(i => i !== index));
+      setPicksAvailable(picksAvailable + 1);
+    } else {
+      if (picksAvailable > 0) {
+        setPickedIndexes([...pickedIndexes, index]);
+        setPicksAvailable(picksAvailable - 1);
+      }
+    }
+  };
+
+  const handleStart = (): void => {
+    const newPrizes: string[] = [];
+    let pool = [...prizePool];
+
+    pickedIndexes.forEach(() => {
+      const randomIndex = Math.floor(Math.random() * pool.length);
+      newPrizes.push(pool[randomIndex]);
+      pool.splice(randomIndex, 1);
+    });
+
+    setRewardsWon(newPrizes);
+    setPrizePool(pool);
+    setShowSummaryModal(true);
+    setGameLocked(true);
+  };
 
   const getTotalShido = (): number => {
-    return prizesWon.reduce((total, prize) => {
+    return rewardsWon.reduce((total, prize) => {
       const match = prize.match(/(\d+)/);
       return match ? total + parseInt(match[1]) : total;
     }, 0);
   };
 
-  const handlePick = (index: number): void => {
-    if (!isPlaying || selectedCount >= tickets || pickedIndexes.includes(index)) return;
-
-    let prize: string | null = null;
-    if (prizePool.length > 0) {
-      const randomIndex = Math.floor(Math.random() * prizePool.length);
-      prize = prizePool[randomIndex];
-      const newPool = [...prizePool];
-      newPool.splice(randomIndex, 1);
-      setPrizePool(newPool);
-    }
-
-    if (prize) {
-      setPrizesWon([...prizesWon, prize]);
-      setLastPrize(prize);
-    } else {
-      setLastPrize(null);
-    }
-
-    setSelectedCount(selectedCount + 1);
-    setPickedIndexes([...pickedIndexes, index]);
-    setShowResult(true);
-    setTimeout(() => setShowResult(false), 2000);
+  const resetGame = (): void => {
+    setPicksTotal(0);
+    setPicksAvailable(0);
+    setPickedIndexes([]);
+    setRewardsWon([]);
+    setPrizePool([]);
+    setGameStarted(false);
+    setGameLocked(false);
+    setShowSummaryModal(false);
   };
 
   return (
     <div className="container">
-      <img src={logo} alt="Lucky Mango Logo" className="logo" loading="lazy" />
+        <div className="logo-banner">
+        <img src={logo} alt="Lucky Mango Logo" className="logo" loading="lazy" />
+        </div>
 
-      <div className="mango-grid">
-        {[...Array(20)].map((_, i) => (
-          <button
-            key={i}
-            className="mango-btn"
-            onClick={() => handlePick(i)}
-            disabled={pickedIndexes.includes(i)}
+        <div className="status-bar">
+            <div className="status-left">🎟️ Ticket: ({picksAvailable} / {picksTotal})</div>
+        </div>
+
+        <div className="mango-grid">
+            {Array.from({ length: 4 }).map((_, rowIndex) => (
+        <div key={rowIndex} className="mango-row">
+          {Array.from({ length: 5 }).map((_, colIndex) => {
+          const index = rowIndex * 5 + colIndex;
+          return (
+            <button
+              key={index}
+              className="mango-btn"
+              onClick={() => handlePick(index)}
+              style={{
+                opacity: pickedIndexes.includes(index) ? 0.4 : 1,
+                borderColor: pickedIndexes.includes(index) ? '#4caf50' : '#ffb300'
+            }}
           >
-            <img
-              src={mangoIcon}
-              alt="Mango"
-              className="mango-img"
-              style={{ opacity: pickedIndexes.includes(i) ? 0.4 : 1 }}
-              loading="lazy"
-            />
-          </button>
+              <img src={mangoIcon} alt="Mango" className="mango-img" loading="lazy" />
+           </button>
+           );
+          })}
+        </div>
         ))}
-      </div>
 
-      <div className="status-bar">
-        <div className="status-left">🎟️ Tickets: {tickets}</div>  
-        <div className="status-right">🥭 Remaining: {20 - selectedCount} / 20</div>
-        <div className="status-right">🎁 Total Rewards: {getTotalShido()} SHIDO</div>
-        <img src={mascotMango} alt="Mascot Mango" className="mascot" loading="lazy" />        
+              <div className="status-bar">
+          <div className="status-right">🎁 Total Rewards: {getTotalShido()} SHIDO</div>
       </div>
- 
 
       <div className="button-group">
-        <button className="start-btn" onClick={() => setIsPlaying(true)}>Start</button>
-        <button className="buy-btn" onClick={() => setShowTicketPage(true)}>Buy Ticket</button>
-        <button className="how-btn" onClick={() => setShowModal(true)}>How to Play</button> 
+        <button
+          className={`start-btn ${picksAvailable === 0 && pickedIndexes.length === picksTotal ? 'active' : 'disabled'}`}
+          onClick={handleStart}
+          disabled={picksAvailable !== 0}
+        >
+          Start
+        </button>
       </div>
 
-      {showResult && (
-        <div className="result-banner">
-          <img
-            src={lastPrize ? mascotWin : mascotLose}
-            alt="Result Mascot"
-            className="result-mascot"
-            loading="lazy"
-          />
-          <p>{lastPrize ? `You won: ${lastPrize}` : 'No prize this time 😢'}</p>
-        </div>
-      )}
+      <div className="bottom-nav">
+          <button className="nav-btn">🏠 Home</button>
+          <button className="nav-btn">🎁 Rewards</button>
+          <button className="nav-btn">👤 Profile</button>
+          <button className="nav-btn">⚙️ Settings</button>
+      </div>
 
-      {isPlaying && selectedCount === tickets && (
-        <div className="modal-overlay" onClick={() => setIsPlaying(false)}>
-          <div className="modal-content summary-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>🎁 Summary of Rewards</h2>
-            {prizesWon.length > 0 ? (
-              <ul>
-                {prizesWon.map((prize, i) => (
-                  <li key={i}>{prize}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>No rewards this round.</p>
-            )}
-            <p>Total: {getTotalShido()} SHIDO</p>
-            <button className="close-btn" onClick={() => setIsPlaying(false)}>Close</button>
-          </div>
-        </div>
-      )}
+    </div>
+      
 
-      {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>How to Play Lucky Mango</h2>
-
-            <h3>🎮 Game Objective</h3>
-            <p>Select one mango from the garden to randomly receive a SHIDO prize remaining in the game.</p>
-
-            <h3>📜 Ticket Rules</h3>
-            <p>Each ticket lets you select the number of times allowed by that ticket, from the 20 total prizes in the game:</p>
-            <p>1000 SHIDO — 1 pick</p>
-            <p>1900 SHIDO — 2 picks</p>
-            <p>2700 SHIDO — 3 picks</p>
-            <p>3400 SHIDO — 4 picks</p>
-            <p>4000 SHIDO — 5 picks</p>
-
-            <h3>🎁 Available Prizes (Total: 20)</h3>
-            <p>1 prize of 5000 SHIDO</p>
-            <p>1 prize of 3500 SHIDO</p>
-            <p>1 prize of 2500 SHIDO</p>
-            <p>7 prizes of 200 SHIDO</p>
-            <p>10 prizes of 100 SHIDO</p>
-
-            <button className="close-btn" onClick={() => setShowModal(false)}>Back</button>
-          </div>
-        </div>
-      )}
-
-      {showTicketPage && (
-        <div className="modal-overlay" onClick={() => setShowTicketPage(false)}>
+      {showTicketModal && (
+        <div className="modal-overlay" onClick={() => setShowTicketModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <img src={ticketIcon} alt="Ticket Icon" className="ticket-icon" loading="lazy" />
             <h2>🎟️ Choose Your Ticket</h2>
@@ -168,12 +142,11 @@ function App() {
                   <button
                     className="buy-ticket-btn"
                     onClick={() => {
-                      setTickets(ticket.picks);
-                      setSelectedTicket(null);
-                      setShowTicketPage(false);
-                      setSelectedCount(0);
-                      setPickedIndexes([]);
-                      setPrizesWon([]);
+                      setPicksTotal(ticket.picks);
+                      setPicksAvailable(ticket.picks);
+                      setShowTicketModal(false);
+                      setGameStarted(true);
+                      setGameLocked(false);
                       setPrizePool([
                         '🎉 5000 SHIDO',
                         '🎉 3500 SHIDO',
@@ -181,7 +154,6 @@ function App() {
                         ...Array(7).fill('🎉 200 SHIDO'),
                         ...Array(10).fill('🎉 100 SHIDO')
                       ]);
-                      setIsPlaying(true);
                     }}
                   >
                     Buy
@@ -189,14 +161,36 @@ function App() {
                 </li>
               ))}
             </ul>
-            <button className="close-btn" onClick={() => setShowTicketPage(false)}>Back</button>
+            <button className="close-btn" onClick={() => setShowTicketModal(false)}>Back</button>
           </div>
         </div>
       )}
 
-      
-
-      
+      {showHowToModal && (
+        <div className="modal-overlay" onClick={() => setShowHowToModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>How to Play Lucky Mango</h2>
+            <p>🎮 Select mangoes based on your ticket picks. You can change your selection until you press Start.</p>
+            <p>🎟️ Ticket prices:</p>
+            <ul>
+              <li>1000 SHIDO — 1 pick</li>
+              <li>1900 SHIDO — 2 picks</li>
+              <li>2700 SHIDO — 3 picks</li>
+              <li>3400 SHIDO — 4 picks</li>
+              <li>4000 SHIDO — 5 picks</li>
+            </ul>
+            <p>🎁 Prizes:</p>
+            <ul>
+              <li>1 prize of 5000 SHIDO</li>
+              <li>1 prize of 3500 SHIDO</li>
+              <li>1 prize of 2500 SHIDO</li>
+              <li>7 prizes of 200 SHIDO</li>
+              <li>10 prizes of 100 SHIDO</li>
+            </ul>
+            <button className="close-btn" onClick={() => setShowHowToModal(false)}>Back</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
